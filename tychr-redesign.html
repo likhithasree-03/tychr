@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tychr — World-Class Online Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0C1F3F;
+    --navy-mid: #1A3260;
+    --blue: #1B5FBF;
+    --blue-light: #E8F0FC;
+    --blue-accent: #3B7DE8;
+    --gold: #C9960A;
+    --gold-light: #FBF4E0;
+    --green: #12704A;
+    --green-light: #E6F5EE;
+    --text: #0C1F3F;
+    --text-mid: #3A4A65;
+    --text-muted: #6B7A94;
+    --border: #DCE3EF;
+    --bg: #FFFFFF;
+    --bg-subtle: #F5F7FC;
+    --bg-warm: #FAFAF8;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--text); background: var(--bg); line-height: 1.6; font-size: 16px; }
+
+  /* UTILITIES */
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
+  .tag { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; }
+  .tag.gold { background: var(--gold-light); color: var(--gold); }
+  .tag.green { background: var(--green-light); color: var(--green); }
+  .section-heading { font-family: var(--serif); font-size: clamp(30px, 4vw, 44px); font-weight: 400; line-height: 1.15; color: var(--navy); }
+  .section-sub { font-size: 17px; color: var(--text-mid); line-height: 1.7; max-width: 560px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 15px; font-weight: 500; padding: 13px 28px; border-radius: var(--radius); cursor: pointer; text-decoration: none; transition: all 0.2s; border: none; }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-primary:hover { background: var(--navy-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(12,31,63,0.25); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+  .btn-outline:hover { background: var(--navy); color: #fff; }
+  .btn-blue { background: var(--blue); color: #fff; }
+  .btn-blue:hover { background: var(--blue-accent); transform: translateY(-1px); }
+  .divider { width: 48px; height: 3px; background: var(--gold); border-radius: 2px; margin: 16px 0 28px; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { font-family: var(--serif); font-size: 26px; color: var(--navy); text-decoration: none; letter-spacing: -0.5px; }
+  .logo span { color: var(--blue); }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--text-mid); font-size: 14.5px; font-weight: 400; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta { display: flex; align-items: center; gap: 12px; }
+  .nav-contact { font-size: 13px; color: var(--text-muted); }
+
+  /* HERO */
+  .hero { padding: 88px 0 72px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -120px; width: 640px; height: 640px; background: radial-gradient(circle, #EAF0FC 0%, transparent 70%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .hero-label { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+  .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .hero-label span { font-size: 13px; font-weight: 500; color: var(--green); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(36px, 5vw, 56px); font-weight: 400; line-height: 1.1; color: var(--navy); margin-bottom: 20px; }
+  .hero h1 em { font-style: italic; color: var(--blue); }
+  .hero-desc { font-size: 17px; color: var(--text-mid); line-height: 1.7; margin-bottom: 36px; max-width: 460px; }
+  .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .hero-trust { display: flex; align-items: center; gap: 20px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); }
+  .trust-stat { text-align: center; }
+  .trust-stat strong { display: block; font-family: var(--serif); font-size: 26px; color: var(--navy); }
+  .trust-stat small { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .trust-divider { width: 1px; height: 36px; background: var(--border); }
+  .hero-visual { position: relative; }
+  .hero-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; box-shadow: 0 2px 24px rgba(12,31,63,0.07); }
+  .hero-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--blue); font-size: 14px; flex-shrink: 0; }
+  .hero-card-head h4 { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .hero-card-head p { font-size: 13px; color: var(--text-muted); }
+  .score-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .score-pill { flex: 1; background: var(--bg-subtle); border-radius: 8px; padding: 10px 12px; text-align: center; }
+  .score-pill strong { display: block; font-size: 22px; font-weight: 600; color: var(--navy); font-family: var(--serif); }
+  .score-pill span { font-size: 11px; color: var(--text-muted); }
+  .score-pill.highlight { background: var(--blue-light); }
+  .score-pill.highlight strong { color: var(--blue); }
+  .progress-row { margin-bottom: 8px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; color: var(--text-mid); }
+  .progress-bar { height: 6px; background: #E8EDF5; border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: var(--blue); }
+  .badge-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .badge { font-size: 12px; padding: 4px 10px; border-radius: 4px; font-weight: 500; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-gold { background: var(--gold-light); color: var(--gold); }
+  .floating-card { position: absolute; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; box-shadow: 0 4px 16px rgba(12,31,63,0.1); }
+  .fc-tl { top: -20px; left: -30px; font-size: 13px; }
+  .fc-br { bottom: -16px; right: -20px; font-size: 12px; width: 160px; }
+  .fc-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .fc-green { background: #22c55e; }
+  .fc-amber { background: #f59e0b; }
+
+  /* LOGOS / MEDIA */
+  .logos-section { background: var(--bg-subtle); padding: 36px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .logos-label { text-align: center; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+  .logos-track { display: flex; align-items: center; justify-content: center; gap: 0; overflow: hidden; }
+  .logos-inner { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: center; }
+  .media-logo { font-size: 14px; font-weight: 600; color: var(--text-muted); padding: 6px 16px; border: 1px solid var(--border); border-radius: 6px; white-space: nowrap; }
+
+  /* CHALLENGES */
+  .challenges { padding: 88px 0; }
+  .challenges-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 48px; }
+  .challenge-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; transition: box-shadow 0.2s; }
+  .challenge-card:hover { box-shadow: 0 4px 20px rgba(12,31,63,0.08); }
+  .challenge-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 20px; }
+  .ci-blue { background: var(--blue-light); }
+  .ci-gold { background: var(--gold-light); }
+  .ci-green { background: var(--green-light); }
+  .challenge-card h3 { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .challenge-card p { font-size: 14.5px; color: var(--text-mid); line-height: 1.65; }
+
+  /* PROGRAMS */
+  .programs { padding: 88px 0; background: var(--bg-subtle); }
+  .programs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+  .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .program-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px; display: flex; flex-direction: column; transition: all 0.2s; }
+  .program-card:hover { box-shadow: 0 6px 24px rgba(12,31,63,0.09); transform: translateY(-2px); }
+  .program-card.featured { background: var(--navy); border-color: var(--navy); }
+  .program-card.featured .program-name { color: #fff; }
+  .program-card.featured .program-tagline { color: rgba(255,255,255,0.6); }
+  .program-card.featured .program-feature { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.15); }
+  .program-card.featured .program-feature::before { color: rgba(255,255,255,0.5); }
+  .program-card.featured .btn-outline { border-color: rgba(255,255,255,0.4); color: #fff; }
+  .program-card.featured .btn-outline:hover { background: rgba(255,255,255,0.15); }
+  .program-badge { margin-bottom: 20px; }
+  .program-name { font-family: var(--serif); font-size: 22px; color: var(--navy); margin-bottom: 6px; }
+  .program-tagline { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; }
+  .program-features { list-style: none; margin-bottom: 24px; flex: 1; }
+  .program-feature { font-size: 14px; color: var(--text-mid); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+  .program-feature::before { content: '✓'; color: var(--green); font-weight: 600; flex-shrink: 0; }
+
+  /* HOW IT WORKS */
+  .how { padding: 88px 0; }
+  .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 56px; position: relative; }
+  .steps-grid::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: var(--border); z-index: 0; }
+  .step { text-align: center; padding: 0 12px; position: relative; z-index: 1; }
+  .step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-family: var(--serif); font-size: 20px; color: var(--navy); font-weight: 400; transition: all 0.2s; }
+  .step:hover .step-num { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+  .step h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* CURRICULA */
+  .curricula { padding: 72px 0; background: var(--navy); }
+  .curricula-inner { display: flex; align-items: center; gap: 64px; }
+  .curricula-text { flex-shrink: 0; max-width: 320px; }
+  .curricula-text .section-heading { color: #fff; }
+  .curricula-text .section-sub { color: rgba(255,255,255,0.65); }
+  .curricula-text .divider { background: var(--gold); }
+  .curricula-pills { display: flex; flex-wrap: wrap; gap: 10px; flex: 1; }
+  .curriculum-pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 500; padding: 10px 18px; border-radius: var(--radius); cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .curriculum-pill:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.35); color: #fff; }
+  .curriculum-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  /* TUTORS */
+  .tutors { padding: 88px 0; background: var(--bg-warm); }
+  .tutors-header { text-align: center; margin-bottom: 52px; }
+  .tutors-header .section-sub { margin: 0 auto; text-align: center; }
+  .tutors-header .divider { margin: 16px auto 0; }
+  .tutors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .tutor-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.2s; }
+  .tutor-card:hover { box-shadow: 0 6px 28px rgba(12,31,63,0.1); transform: translateY(-2px); }
+  .tutor-img-wrap { height: 200px; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .tutor-img-placeholder { width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 28px; color: var(--blue); background: var(--blue-light); }
+  .tutor-body { padding: 20px 20px 24px; }
+  .tutor-name { font-family: var(--serif); font-size: 20px; color: var(--navy); margin-bottom: 4px; }
+  .tutor-role { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .tutor-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tutor-badge { font-size: 11.5px; padding: 3px 8px; border-radius: 4px; background: var(--blue-light); color: var(--blue); font-weight: 500; }
+
+  /* RESULTS */
+  .results { padding: 88px 0; }
+  .results-header { text-align: center; margin-bottom: 56px; }
+  .results-header .divider { margin: 16px auto 0; }
+  .results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .result-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 20px; text-align: center; transition: all 0.2s; }
+  .result-card:hover { box-shadow: 0 4px 20px rgba(12,31,63,0.08); }
+  .result-score { font-family: var(--serif); font-size: 40px; color: var(--navy); line-height: 1; margin-bottom: 4px; }
+  .result-score span { font-size: 18px; color: var(--text-muted); }
+  .result-name { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .result-curriculum { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .result-change { font-size: 12.5px; font-weight: 600; color: var(--green); background: var(--green-light); padding: 4px 10px; border-radius: 4px; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 88px 0; background: var(--bg-subtle); }
+  .testimonials-header { text-align: center; margin-bottom: 52px; }
+  .testimonials-header .divider { margin: 16px auto; }
+  .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .testimonial-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+  .stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 14px; }
+  .testimonial-text { font-size: 15.5px; color: var(--text-mid); line-height: 1.75; margin-bottom: 20px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .author-info strong { display: block; font-size: 14px; font-weight: 600; color: var(--navy); }
+  .author-info span { font-size: 12.5px; color: var(--text-muted); }
+  .change-badge { margin-left: auto; background: var(--green-light); color: var(--green); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 4px; }
+
+  /* FAQ */
+  .faq { padding: 88px 0; }
+  .faq-inner { display: grid; grid-template-columns: 320px 1fr; gap: 64px; align-items: start; }
+  .faq-list { }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q { width: 100%; text-align: left; background: none; border: none; padding: 18px 0; font-size: 15px; font-weight: 500; color: var(--navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--sans); }
+  .faq-q:hover { color: var(--blue); }
+  .faq-chevron { font-size: 18px; color: var(--text-muted); transition: transform 0.25s; flex-shrink: 0; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-a { font-size: 14.5px; color: var(--text-mid); line-height: 1.7; padding: 0 0 18px; display: none; }
+  .faq-item.open .faq-a { display: block; }
+
+  /* CTA */
+  .cta-section { padding: 88px 0; background: var(--navy); }
+  .cta-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .cta-text h2 { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 44px); color: #fff; margin-bottom: 16px; line-height: 1.15; }
+  .cta-text p { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 28px; }
+  .cta-stats { display: flex; gap: 32px; margin-top: 32px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.15); }
+  .cta-stat strong { display: block; font-family: var(--serif); font-size: 30px; color: #fff; }
+  .cta-stat small { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+  .cta-form { background: var(--bg); border-radius: var(--radius-lg); padding: 36px 32px; }
+  .cta-form h3 { font-family: var(--serif); font-size: 22px; color: var(--navy); margin-bottom: 4px; }
+  .cta-form p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 24px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-mid); margin-bottom: 6px; }
+  .form-group input, .form-group select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 14.5px; font-family: var(--sans); color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--blue); }
+  .form-group input::placeholder { color: var(--text-muted); }
+  .form-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; }
+
+  /* FOOTER */
+  footer { background: #07152A; padding: 56px 0 28px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-logo { font-family: var(--serif); font-size: 24px; color: #fff; margin-bottom: 12px; }
+  .footer-logo span { color: #5B9BF5; }
+  .footer-about { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.7; margin-bottom: 20px; }
+  .footer-contact-item { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
+  .footer-col h5 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); margin-bottom: 16px; font-weight: 600; }
+  .footer-link { display: block; font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+  .footer-link:hover { color: #fff; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+  .social-row { display: flex; gap: 12px; }
+  .social-btn { width: 32px; height: 32px; border-radius: 6px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(255,255,255,0.5); font-size: 13px; transition: all 0.2s; }
+  .social-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+  /* SCROLL ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .fade-up.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .hero-grid, .cta-inner, .faq-inner, .curricula-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .programs-grid, .tutors-grid { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: repeat(2, 1fr); }
+    .challenges-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .steps-grid::before { display: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .programs-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) {
+    .container { padding: 0 20px; }
+    .programs-grid, .tutors-grid, .results-grid, .challenges-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" href="#">Ty<span>chr</span></a>
+      <ul class="nav-links">
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#tutors">Tutors</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-cta">
+        <span class="nav-contact">📞 +91-9540653900</span>
+        <a href="#cta" class="btn btn-primary" style="padding:10px 20px; font-size:14px;">Book Free Trial</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-label">
+          <div class="hero-dot"></div>
+          <span>10+ Years · 3,500+ Students · 70 Countries</span>
+        </div>
+        <h1>Expert Tutoring for <em>IB, IGCSE & AP</em> Students</h1>
+        <p class="hero-desc">1-on-1 live sessions with IB Examiners and top-scoring alumni. Personalised plans built around your goals — from grade improvement to university admissions.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn btn-primary">Book Your Free Trial →</a>
+          <a href="#programs" class="btn btn-outline">Explore Programs</a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-stat"><strong>3,500+</strong><small>Students Mentored</small></div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat"><strong>200+</strong><small>Schools Globally</small></div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat"><strong>70+</strong><small>Countries</small></div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat"><strong>10+</strong><small>Years Experience</small></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="floating-card fc-tl">
+          <span class="fc-dot fc-green"></span><strong style="font-size:13px; color:#0C1F3F;">IB Examiner Verified</strong>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-head">
+            <div class="avatar">KA</div>
+            <div>
+              <h4>Kartik — IBDP Student</h4>
+              <p>Session Progress · May 2025</p>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-pill"><strong>36</strong><span>Before</span></div>
+            <div style="display:flex;align-items:center;color:#6B7A94;font-size:18px; padding: 0 4px;">→</div>
+            <div class="score-pill highlight"><strong>42</strong><span>After Tychr</span></div>
+            <div class="score-pill" style="background:#E6F5EE;"><strong style="color:#12704A;">+6</strong><span>Points</span></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Mathematics AA HL</span><span style="color:#12704A; font-weight:600;">7 / 7</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Physics HL</span><span style="color:#12704A; font-weight:600;">6 / 7</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Chemistry HL</span><span style="color:#12704A; font-weight:600;">6 / 7</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+          </div>
+          <div class="badge-row">
+            <span class="badge badge-green">IB Examiner Tutor</span>
+            <span class="badge badge-gold">University Admitted</span>
+          </div>
+        </div>
+        <div class="floating-card fc-br">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+            <span class="fc-dot fc-green"></span>
+            <span style="font-size:12px;font-weight:600;color:#0C1F3F;">Live session in progress</span>
+          </div>
+          <span style="font-size:11px;color:#6B7A94;">500+ students joined this week</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AS SEEN IN -->
+<section class="logos-section">
+  <div class="container">
+    <p class="logos-label">As Featured In</p>
+    <div class="logos-inner">
+      <span class="media-logo">Forbes India</span>
+      <span class="media-logo">Economic Times</span>
+      <span class="media-logo">Times of India</span>
+      <span class="media-logo">Hindustan Times</span>
+      <span class="media-logo">YourStory</span>
+      <span class="media-logo">The Hindu</span>
+      <span class="media-logo">Business Standard</span>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGES -->
+<section class="challenges fade-up">
+  <div class="container">
+    <div style="max-width:540px;">
+      <span class="tag">Why Students Choose Us</span>
+      <div class="divider"></div>
+      <h2 class="section-heading">International curricula are demanding.<br>We know exactly how they work.</h2>
+      <p class="section-sub" style="margin-top:16px;">IB, IGCSE and AP are among the most rigorous programmes in the world. Our tutors are examiners and top-scorers who understand the exact criteria assessors use.</p>
+    </div>
+    <div class="challenges-grid" style="margin-top:48px;">
+      <div class="challenge-card">
+        <div class="challenge-icon ci-blue"><span>📋</span></div>
+        <h3>Complex Assessment Criteria</h3>
+        <p>IB rubrics reward specific skills most teachers don't explicitly teach. Our examiners know precisely what earns top marks.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon ci-gold"><span>⏱</span></div>
+        <h3>High-Pressure Deadlines</h3>
+        <p>IA, EE, TOK — managing multiple high-stakes components simultaneously while keeping up with coursework overwhelms even strong students.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-icon ci-green"><span>🎯</span></div>
+        <h3>University Target Scores</h3>
+        <p>Top universities require 40+ for IB. Getting from 35 to 42 requires strategy, not just hard work. We've helped thousands do exactly that.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULA -->
+<section class="curricula">
+  <div class="container">
+    <div class="curricula-inner">
+      <div class="curricula-text">
+        <span class="tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Programmes We Cover</span>
+        <div class="divider"></div>
+        <h2 class="section-heading">Every major global curriculum</h2>
+        <p class="section-sub" style="margin-top:16px;">Specialist tutors for every board, from IB PYP to university entrance exams.</p>
+      </div>
+      <div class="curricula-pills">
+        <a href="#" class="curriculum-pill active">IB PYP</a>
+        <a href="#" class="curriculum-pill">IB MYP</a>
+        <a href="#" class="curriculum-pill">IBDP</a>
+        <a href="#" class="curriculum-pill">IGCSE</a>
+        <a href="#" class="curriculum-pill">AS / A-Level</a>
+        <a href="#" class="curriculum-pill">AP</a>
+        <a href="#" class="curriculum-pill">SAT</a>
+        <a href="#" class="curriculum-pill">ACT</a>
+        <a href="#" class="curriculum-pill">Cambridge</a>
+        <a href="#" class="curriculum-pill">Edexcel</a>
+        <a href="#" class="curriculum-pill">AQA</a>
+        <a href="#" class="curriculum-pill">OCR</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="programs fade-up" id="programs">
+  <div class="container">
+    <div class="programs-header">
+      <div>
+        <span class="tag">Our Programmes</span>
+        <div class="divider"></div>
+        <h2 class="section-heading">Choose the support level<br>that fits your goals</h2>
+      </div>
+      <a href="#cta" class="btn btn-primary" style="flex-shrink:0;">Book Free Trial →</a>
+    </div>
+    <div class="programs-grid">
+      <div class="program-card">
+        <div class="program-badge"><span class="tag">Most Popular</span></div>
+        <p class="program-name">Full IB Support</p>
+        <p class="program-tagline">Complete guidance for your entire IB journey</p>
+        <ul class="program-features">
+          <li class="program-feature">Complete support across all IB subjects</li>
+          <li class="program-feature">Extended Essay & TOK guidance</li>
+          <li class="program-feature">Personalised study plan & mentoring</li>
+          <li class="program-feature">Regular progress tracking & parent updates</li>
+          <li class="program-feature">IB Certified Cat-1/2/3 Tutors</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary" style="width:100%; justify-content:center;">Start Free Trial</a>
+      </div>
+
+      <div class="program-card featured">
+        <div class="program-badge"><span class="tag gold">Best Results</span></div>
+        <p class="program-name">40+ Achiever Batch</p>
+        <p class="program-tagline">Structured pathway to scoring 40+ in IBDP</p>
+        <ul class="program-features">
+          <li class="program-feature">Guidance from active IB Examiners</li>
+          <li class="program-feature">Tips from IB alumni who scored 44–45</li>
+          <li class="program-feature">Focused past paper & mock test sessions</li>
+          <li class="program-feature">Full-length IB-style test series</li>
+          <li class="program-feature">IB Certified Cat-1/2/3 Tutors</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline" style="width:100%; justify-content:center;">Start Free Trial</a>
+      </div>
+
+      <div class="program-card">
+        <div class="program-badge"><span class="tag green">Beyond Grades</span></div>
+        <p class="program-name">University Readiness</p>
+        <p class="program-tagline">Academics + admissions, end-to-end</p>
+        <ul class="program-features">
+          <li class="program-feature">IB tutoring for targeted grades</li>
+          <li class="program-feature">SAT, ACT and AP prep support</li>
+          <li class="program-feature">Profile building with admissions experts</li>
+          <li class="program-feature">College essay guidance programme</li>
+          <li class="program-feature">Internship & extracurricular strategy</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary" style="width:100%; justify-content:center;">Start Free Trial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how fade-up" id="how">
+  <div class="container">
+    <div style="text-align:center; max-width:540px; margin:0 auto 0;">
+      <span class="tag">How It Works</span>
+      <div class="divider" style="margin: 16px auto 0;"></div>
+      <h2 class="section-heading" style="margin-top:16px;">From first session to<br>your dream score</h2>
+      <p class="section-sub" style="margin:16px auto 0; text-align:center;">Five straightforward steps. No long-term commitment until you're confident.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Tell Us Your Goals</h4>
+        <p>Share your current level, target score, and aspirations with our counsellors.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Tutor Match</h4>
+        <p>We handpick an expert who fits your subject, learning style and personality.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Free Trial Session</h4>
+        <p>Experience a live session with no commitment. See the Tychr difference first-hand.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Feedback & Fit</h4>
+        <p>Love it? We confirm your tutor and build a tailored plan. Need adjustments? We'll find a better match.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <h4>Begin Your Journey</h4>
+        <p>Regular sessions, progress tracking, and continuous support until you hit your target.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TUTORS -->
+<section class="tutors fade-up" id="tutors">
+  <div class="container">
+    <div class="tutors-header">
+      <span class="tag">Meet the Experts</span>
+      <div class="divider"></div>
+      <h2 class="section-heading" style="margin-top:16px;">IB Examiners & subject specialists</h2>
+      <p class="section-sub">Every Tychr tutor is vetted — active examiners, IB alumni, and university educators who know the curriculum inside out.</p>
+    </div>
+    <div class="tutors-grid">
+      <div class="tutor-card">
+        <div class="tutor-img-wrap" style="background:#EAF0FC;">
+          <div class="tutor-img-placeholder">NB</div>
+        </div>
+        <div class="tutor-body">
+          <p class="tutor-name">Dr. Nikita Bhan</p>
+          <p class="tutor-role">IB Examiner · Chemistry & Biology · 8+ Years</p>
+          <div class="tutor-badges">
+            <span class="tutor-badge">IB Examiner</span>
+            <span class="tutor-badge">Cat-3 Certified</span>
+            <span class="tutor-badge">Sciences HL</span>
+          </div>
+        </div>
+      </div>
+      <div class="tutor-card">
+        <div class="tutor-img-wrap" style="background:#E6F5EE;">
+          <div class="tutor-img-placeholder" style="background:#D1EDDF; color:#12704A;">SK</div>
+        </div>
+        <div class="tutor-body">
+          <p class="tutor-name">SreeVidya KG</p>
+          <p class="tutor-role">IB Examiner · Mathematics · 20+ Years</p>
+          <div class="tutor-badges">
+            <span class="tutor-badge">IB Examiner</span>
+            <span class="tutor-badge">Cat-3 Certified</span>
+            <span class="tutor-badge">Math AA/AI</span>
+          </div>
+        </div>
+      </div>
+      <div class="tutor-card">
+        <div class="tutor-img-wrap" style="background:#FBF4E0;">
+          <div class="tutor-img-placeholder" style="background:#F5E8C5; color:#C9960A;">BC</div>
+        </div>
+        <div class="tutor-body">
+          <p class="tutor-name">Barbara Centis</p>
+          <p class="tutor-role">IB Examiner · Language & Literature · 12+ Years</p>
+          <div class="tutor-badges">
+            <span class="tutor-badge">IB Examiner</span>
+            <span class="tutor-badge">Cat-2 Certified</span>
+            <span class="tutor-badge">Group 1 & 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:36px;">
+      <a href="#" class="btn btn-outline">View All Tutors →</a>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results fade-up" id="results">
+  <div class="container">
+    <div class="results-header">
+      <span class="tag green">Proven Results</span>
+      <div class="divider"></div>
+      <h2 class="section-heading" style="margin-top:16px;">Students who achieved their scores</h2>
+      <p class="section-sub" style="margin:12px auto 0; text-align:center;">Real students, verified results. These aren't exceptions — they're what focused, expert tutoring delivers.</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-score">42<span>/45</span></div>
+        <p class="result-name">Kartik</p>
+        <p class="result-curriculum">IBDP · India</p>
+        <span class="result-change">↑ +6 from 36</span>
+      </div>
+      <div class="result-card">
+        <div class="result-score">42<span>/45</span></div>
+        <p class="result-name">Tanisha</p>
+        <p class="result-curriculum">IBDP · UAE</p>
+        <span class="result-change">↑ +7 from 35</span>
+      </div>
+      <div class="result-card">
+        <div class="result-score">41<span>/45</span></div>
+        <p class="result-name">Eshaan</p>
+        <p class="result-curriculum">IBDP · Singapore</p>
+        <span class="result-change">↑ +5 from 36</span>
+      </div>
+      <div class="result-card">
+        <div class="result-score">42<span>/45</span></div>
+        <p class="result-name">Ruhani</p>
+        <p class="result-curriculum">IBDP · UK</p>
+        <span class="result-change">↑ +8 from 34</span>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:36px;">
+      <a href="#" class="btn btn-outline">See All Results →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials fade-up">
+  <div class="container">
+    <div class="testimonials-header">
+      <span class="tag">Student Stories</span>
+      <div class="divider"></div>
+      <h2 class="section-heading" style="margin-top:16px;">What students & parents say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"The tutors explained concepts with exceptional clarity. The structured approach to past papers gave me real exam confidence. I went from a predicted 36 to a final score of 42."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#EAF0FC; color:#1B5FBF;">JA</div>
+          <div class="author-info">
+            <strong>Jayanath R.</strong>
+            <span>IB MYP · Economics</span>
+          </div>
+          <span class="change-badge">4 → 7</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Tychr didn't just teach my son Physics — they built his confidence. He scored 5 on AP Physics C and is now at Georgia Tech for Mechanical Engineering."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#FBF4E0; color:#C9960A;">SP</div>
+          <div class="author-info">
+            <strong>Savita P.</strong>
+            <span>Parent · AP Physics</span>
+          </div>
+          <span class="change-badge">3 → 5</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"As a parent, the regular progress reports gave me peace of mind. The tutors genuinely care about results. My daughter's predicted grades improved by 8 points over 6 months."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#E6F5EE; color:#12704A;">MK</div>
+          <div class="author-info">
+            <strong>Meera K.</strong>
+            <span>Parent · IBDP · Dubai</span>
+          </div>
+          <span class="change-badge">34 → 42</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"What sets Tychr apart is the examiner insight. My Maths AA HL tutor knew exactly which techniques score marks and which look good but don't. That clarity is priceless."</p>
+        <div class="testimonial-author">
+          <div class="avatar" style="background:#EAF0FC; color:#1B5FBF;">VS</div>
+          <div class="author-info">
+            <strong>Vishaal S.</strong>
+            <span>IBDP · Maths AA HL</span>
+          </div>
+          <span class="change-badge">4 → 7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq fade-up">
+  <div class="container">
+    <div class="faq-inner">
+      <div>
+        <span class="tag">FAQ</span>
+        <div class="divider"></div>
+        <h2 class="section-heading">Common questions</h2>
+        <p class="section-sub" style="margin-top:16px;">Everything you need to know before booking your first session.</p>
+        <a href="#cta" class="btn btn-primary" style="margin-top:32px;">Book Free Trial →</a>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-q" onclick="toggleFaq(this)">What makes Tychr different from other tutoring platforms? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">Our tutors are active IB Examiners and top-scoring alumni who know exactly what assessors look for. Combined with personalised plans, regular feedback, and progress tracking, students consistently achieve 2–8 point improvements.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How does the free trial work? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">You book a no-commitment trial session with a recommended tutor. After the session, share your feedback. If you're happy, we create your personalised plan. If not, we match you with another tutor at no cost.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Which subjects do you cover? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">We cover all IB Group 1–6 subjects including Mathematics AA/AI, Sciences (HL/SL), Economics, Business Management, History, English A & B, and more. We also cover IGCSE, A-Level, AP, SAT and ACT.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How are tutors selected and verified? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">All tutors undergo a rigorous multi-stage vetting process including subject proficiency tests, teaching demonstration, and background verification. Many hold IB Examiner certification at Category 1, 2 or 3 level.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What are the pricing options? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">Pricing depends on subject, level, tutor expertise, and session frequency. Our counsellors will recommend the most suitable plan during your free demo. There are no hidden fees and all plans are flexible.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Can I access sessions on mobile? <span class="faq-chevron">⌃</span></button>
+          <p class="faq-a">Yes. Sessions are conducted via video call and our resources are fully accessible on desktops, tablets and mobile devices so students can learn from anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + FORM -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <span class="tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Get Started Today</span>
+        <h2 style="margin-top:20px;">Your target score is achievable.<br><em style="font-style:italic; color:#93BCFB;">Let us show you how.</em></h2>
+        <p>Book a free, no-commitment trial session. Meet your tutor, experience the approach, and get a personalised plan — all before paying anything.</p>
+        <div class="cta-stats">
+          <div class="cta-stat"><strong>3,500+</strong><small>Students Mentored</small></div>
+          <div class="cta-stat"><strong>200+</strong><small>Partner Schools</small></div>
+          <div class="cta-stat"><strong>70+</strong><small>Countries</small></div>
+        </div>
+      </div>
+
+      <div class="cta-form">
+        <h3>Book Your Free Trial Session</h3>
+        <p>No commitment · Response within 2 hours</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Aarav">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Sharma">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="aarav@email.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 98765 43210">
+        </div>
+        <div class="form-group">
+          <label>Programme / Course</label>
+          <select>
+            <option value="">Select programme...</option>
+            <option>IBDP</option>
+            <option>IB MYP</option>
+            <option>IB PYP</option>
+            <option>IGCSE</option>
+            <option>AS / A-Level</option>
+            <option>AP</option>
+            <option>SAT</option>
+            <option>ACT</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%; justify-content:center; padding:14px;">Book My Free Trial →</button>
+        <p class="form-note">🔒 Your details are safe with us. We never share your information.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Ty<span>chr</span></div>
+        <p class="footer-about">Enhancing the intellectual and creative potential of students worldwide. Expert tutoring for IB, IGCSE, AP and international curricula.</p>
+        <div class="footer-contact-item">📍 HD 213, WeWork DLF Forum, Cyber City, Gurugram, India</div>
+        <div class="footer-contact-item">📞 +91-9540653900 &nbsp;|&nbsp; +91-8825012255</div>
+        <div class="footer-contact-item">✉️ contact@tychr.com</div>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a class="footer-link" href="#">About Us</a>
+        <a class="footer-link" href="#">Our Team</a>
+        <a class="footer-link" href="#">Our Results</a>
+        <a class="footer-link" href="#">Testimonials</a>
+        <a class="footer-link" href="#">Blogs</a>
+        <a class="footer-link" href="#">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Programmes</h5>
+        <a class="footer-link" href="#">IBDP Tutoring</a>
+        <a class="footer-link" href="#">IB MYP Tutoring</a>
+        <a class="footer-link" href="#">IGCSE Tutoring</a>
+        <a class="footer-link" href="#">AS / A-Level</a>
+        <a class="footer-link" href="#">AP Tutoring</a>
+        <a class="footer-link" href="#">SAT / ACT Prep</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a class="footer-link" href="#">Free Resources</a>
+        <a class="footer-link" href="#">Student Forum</a>
+        <a class="footer-link" href="#">University Admissions</a>
+        <a class="footer-link" href="#">Student Internships</a>
+        <a class="footer-link" href="#">Privacy Policy</a>
+        <a class="footer-link" href="#">Terms & Conditions</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Tychr Pvt. Ltd. All rights reserved.</p>
+      <div class="social-row">
+        <a class="social-btn" href="#" title="Facebook">f</a>
+        <a class="social-btn" href="#" title="LinkedIn">in</a>
+        <a class="social-btn" href="#" title="YouTube">▶</a>
+        <a class="social-btn" href="#" title="Instagram">ig</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Stagger hero elements
+window.addEventListener('load', () => {
+  document.querySelector('.hero').classList.add('visible');
+});
+</script>
+</body>
+</html>
